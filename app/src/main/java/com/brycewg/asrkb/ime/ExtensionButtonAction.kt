@@ -129,6 +129,15 @@ enum class ExtensionButtonAction(val id: String, val titleResId: Int, val iconRe
     ),
 
     /**
+     * 畅说模式开关（识别落地后自动开始下一轮聆听）
+     */
+    CONTINUOUS_TALK_TOGGLE(
+        id = "continuous_talk_toggle",
+        titleResId = R.string.ext_btn_continuous_talk,
+        iconResId = R.drawable.waveform
+    ),
+
+    /**
      * 光标左移一位（长按连发）
      */
     CURSOR_LEFT(

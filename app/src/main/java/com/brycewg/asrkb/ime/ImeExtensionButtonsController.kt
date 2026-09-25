@@ -248,6 +248,11 @@ internal class ImeExtensionButtonsController(
         ) {
             updateAutoEnterAfterAsrExtButtonsUi()
         }
+        if (action == ExtensionButtonAction.CONTINUOUS_TALK_TOGGLE &&
+            result == KeyboardActionHandler.ExtensionButtonActionResult.NEED_TOGGLE_CONTINUOUS_TALK
+        ) {
+            updateContinuousTalkExtButtonsUi()
+        }
     }
 
     private fun setupCursorButtonRepeat(btn: View, action: ExtensionButtonAction) {
@@ -298,6 +303,12 @@ internal class ImeExtensionButtonsController(
         }
     }
 
+    private fun updateContinuousTalkExtButtonsUi() {
+        updateDynamicToggleButtons(ExtensionButtonAction.CONTINUOUS_TALK_TOGGLE) { enabled ->
+            if (enabled) R.drawable.waveform_fill else R.drawable.waveform
+        }
+    }
+
     private fun updateMicTapToggleExtButtonsUi() {
         updateDynamicToggleButtons(ExtensionButtonAction.MIC_TAP_TOGGLE) { enabled ->
             if (enabled) R.drawable.hand_pointing else R.drawable.hand_pointing_fill
@@ -338,6 +349,7 @@ internal class ImeExtensionButtonsController(
             ExtensionButtonAction.MIC_TAP_TOGGLE -> prefs.micTapToggleEnabled
             ExtensionButtonAction.FLOATING_KEYBOARD_TOGGLE -> prefs.imeTabletFloatingKeyboardEnabled
             ExtensionButtonAction.AUTO_ENTER_AFTER_ASR_TOGGLE -> prefs.autoEnterAfterAsrEnabled
+            ExtensionButtonAction.CONTINUOUS_TALK_TOGGLE -> prefs.continuousTalkEnabled
             else -> return
         }
         updateDynamicButtons(views.rootView) { view, def ->

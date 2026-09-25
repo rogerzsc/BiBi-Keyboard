@@ -137,7 +137,8 @@ class DashscopeFileAsrEngine(
                     base64Audio = base64Audio,
                     audio = audio,
                     sampleRate = sampleRate,
-                    languages = prefs.getDashLanguages()
+                    languages = prefs.getDashLanguages(),
+                    prompt = prefs.dashPrompt
                 )
             }
             val request = Request.Builder()
@@ -485,24 +486,38 @@ internal fun buildDashGenerationAsrRequestBody(
     base64Audio: String,
     audio: UploadAudioData,
     sampleRate: Int,
-    languages: List<String>
+    languages: List<String>,
+    prompt: String = ""
 ): String {
     val languageHints = DashScopePrefsCompat.parseDashLanguages(languages.joinToString(","))
+    val trimmedPrompt = prompt.trim()
     val userMessage = JSONObject().apply {
         put("role", "user")
         put(
             "content",
-            JSONArray().put(
-                JSONObject().apply {
-                    put("type", "input_audio")
+            JSONArray().apply {
+                // 热词/术语提示：作为文本段放在音频前（与 qwen3-asr-flash 路径对齐），
+                // 对 qwen-audio 系生成式 ASR 生效，可用于同音术语纠偏。
+                if (trimmedPrompt.isNotEmpty()) {
                     put(
-                        "input_audio",
                         JSONObject().apply {
-                            put("data", "data:${audio.mimeType};base64,$base64Audio")
+                            put("type", "text")
+                            put("text", trimmedPrompt)
                         }
                     )
                 }
-            )
+                put(
+                    JSONObject().apply {
+                        put("type", "input_audio")
+                        put(
+                            "input_audio",
+                            JSONObject().apply {
+                                put("data", "data:${audio.mimeType};base64,$base64Audio")
+                            }
+                        )
+                    }
+                )
+            }
         )
     }
     return JSONObject().apply {

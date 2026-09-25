@@ -364,6 +364,11 @@ class Prefs(context: Context) {
             }
         }
 
+    // 畅说模式：识别结果落地后自动开始下一轮聆听（fork 新增）
+    var continuousTalkEnabled: Boolean
+        get() = sp.getBoolean(KEY_CONTINUOUS_TALK_ENABLED, false)
+        set(value) = sp.edit { putBoolean(KEY_CONTINUOUS_TALK_ENABLED, value) }
+
     // 静音自动判停：时间窗口（ms），连续低能量超过该时间则自动停止
     var autoStopSilenceWindowMs: Int
         get() = sp.getInt(

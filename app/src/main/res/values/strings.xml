@@ -231,6 +231,10 @@
   <string name="ext_btn_mic_tap_toggle">Recording mode</string>
   <string name="ext_btn_floating_keyboard">Floating keyboard</string>
   <string name="ext_btn_auto_enter_after_asr">Auto enter after input</string>
+  <string name="ext_btn_continuous_talk">Continuous talk mode</string>
+  <string name="toast_continuous_talk_on">Continuous talk enabled</string>
+  <string name="toast_continuous_talk_off">Continuous talk disabled</string>
+  <string name="status_continuous_talk_listening">Continuous talk: listening…</string>
   <string name="status_copied">Copied</string>
   <string name="status_pasted">Pasted</string>
   <string name="status_nothing_to_undo">Nothing to undo</string>

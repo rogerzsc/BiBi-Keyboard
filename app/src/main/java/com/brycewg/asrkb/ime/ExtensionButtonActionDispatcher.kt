@@ -43,6 +43,7 @@ internal class ExtensionButtonActionDispatcher(
         ExtensionButtonAction.MIC_TAP_TOGGLE -> toggleMicTapMode()
         ExtensionButtonAction.FLOATING_KEYBOARD_TOGGLE -> toggleFloatingKeyboard()
         ExtensionButtonAction.AUTO_ENTER_AFTER_ASR_TOGGLE -> toggleAutoEnterAfterAsr()
+        ExtensionButtonAction.CONTINUOUS_TALK_TOGGLE -> toggleContinuousTalk()
         ExtensionButtonAction.UNDO -> undo(ic)
         ExtensionButtonAction.HIDE_KEYBOARD -> KeyboardActionHandler.ExtensionButtonActionResult.NEED_HIDE_KEYBOARD
     }
@@ -141,6 +142,18 @@ internal class ExtensionButtonActionDispatcher(
         }
         uiListenerProvider()?.onStatusMessage(context.getString(msgRes))
         return KeyboardActionHandler.ExtensionButtonActionResult.SUCCESS
+    }
+
+    private fun toggleContinuousTalk(): KeyboardActionHandler.ExtensionButtonActionResult {
+        val newValue = !prefs.continuousTalkEnabled
+        prefs.continuousTalkEnabled = newValue
+        val msgRes = if (newValue) {
+            R.string.toast_continuous_talk_on
+        } else {
+            R.string.toast_continuous_talk_off
+        }
+        uiListenerProvider()?.onStatusMessage(context.getString(msgRes))
+        return KeyboardActionHandler.ExtensionButtonActionResult.NEED_TOGGLE_CONTINUOUS_TALK
     }
 
     private fun toggleKeepScreenOnWhileRecording(): KeyboardActionHandler.ExtensionButtonActionResult {

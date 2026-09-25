@@ -953,6 +953,16 @@ class KeyboardActionHandler(
                     handleNormalDictationFinal(text, synthetic, seq)
                 }
             }
+            // 畅说模式：本轮识别落地后自动开始下一轮聆听。
+            // 守卫条件：开关开、非取消路径（dropPendingFinal）、引擎不在跑、输入连接仍在。
+            if (prefs.continuousTalkEnabled &&
+                !dropPendingFinal &&
+                !asrManager.isRunning() &&
+                getCurrentInputConnection() != null
+            ) {
+                startNormalListening()
+                uiListener?.onStatusMessage(context.getString(R.string.status_continuous_talk_listening))
+            }
         }
     }
 

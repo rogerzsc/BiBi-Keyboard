@@ -31,6 +31,7 @@ internal const val KEY_UPLOAD_AUDIO_COMPRESSION_ENABLED = "upload_audio_compress
 internal const val KEY_RECORDING_AUTO_STOP_MODE = "recording_auto_stop_mode"
 internal const val KEY_RECORDING_MAX_DURATION_MS = "recording_max_duration_ms"
 internal const val KEY_AUTO_STOP_ON_SILENCE_ENABLED = "auto_stop_on_silence_enabled"
+internal const val KEY_CONTINUOUS_TALK_ENABLED = "continuous_talk_enabled"
 internal const val KEY_AUTO_STOP_SILENCE_WINDOW_MS = "auto_stop_silence_window_ms"
 internal const val KEY_AUTO_STOP_SILENCE_SENSITIVITY = "auto_stop_silence_sensitivity"
 internal const val KEY_KEYBOARD_HEIGHT_TIER = "keyboard_height_tier"
