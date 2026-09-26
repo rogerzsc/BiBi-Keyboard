@@ -274,6 +274,23 @@
                 android:resource="@xml/recognition_service" />
         </service>
 
+        <!-- 数字助手角色（fork 新增）：设为“助手应用”后长按电源键/助手手势直达录音 -->
+        <service
+            android:name=".api.BibiVoiceInteractionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <meta-data
+                android:name="android.voice_interaction"
+                android:resource="@xml/voice_interaction" />
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".api.BibiVoiceInteractionSessionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION" />
+
     </application>
 
 

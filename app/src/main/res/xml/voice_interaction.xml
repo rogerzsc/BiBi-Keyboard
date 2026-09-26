@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 数字助手角色声明（fork 新增）：会话服务 + 支持协助/锁屏唤起 -->
+<voice-interaction
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sessionService="com.brycewg.asrkb.api.BibiVoiceInteractionSessionService"
+    android:supportsAssist="true"
+    android:supportsLaunchVoiceAssistFromKeyguard="true" />
