@@ -369,6 +369,27 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_CONTINUOUS_TALK_ENABLED, false)
         set(value) = sp.edit { putBoolean(KEY_CONTINUOUS_TALK_ENABLED, value) }
 
+    // ===== HomeRail 直达（fork 新增）=====
+    var homerailDirectEnabled: Boolean
+        get() = sp.getBoolean(KEY_HOMERAIL_DIRECT_ENABLED, false)
+        set(value) = sp.edit { putBoolean(KEY_HOMERAIL_DIRECT_ENABLED, value) }
+
+    var homerailBaseUrl: String
+        get() = sp.getString(KEY_HOMERAIL_BASE_URL, "") ?: ""
+        set(value) = sp.edit { putString(KEY_HOMERAIL_BASE_URL, value) }
+
+    var homerailPassword: String
+        get() = sp.getString(KEY_HOMERAIL_PASSWORD, "") ?: ""
+        set(value) = sp.edit { putString(KEY_HOMERAIL_PASSWORD, value) }
+
+    var homerailTtsEnabled: Boolean
+        get() = sp.getBoolean(KEY_HOMERAIL_TTS_ENABLED, true)
+        set(value) = sp.edit { putBoolean(KEY_HOMERAIL_TTS_ENABLED, value) }
+
+    var homerailSessionId: String
+        get() = sp.getString(KEY_HOMERAIL_SESSION_ID, "") ?: ""
+        set(value) = sp.edit { putString(KEY_HOMERAIL_SESSION_ID, value) }
+
     // 静音自动判停：时间窗口（ms），连续低能量超过该时间则自动停止
     var autoStopSilenceWindowMs: Int
         get() = sp.getInt(

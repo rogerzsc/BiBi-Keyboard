@@ -138,6 +138,15 @@ enum class ExtensionButtonAction(val id: String, val titleResId: Int, val iconRe
     ),
 
     /**
+     * HomeRail 直达开关（识别结果直发平台语音会话，不入输入框）
+     */
+    HOMERAIL_DIRECT_TOGGLE(
+        id = "homerail_direct_toggle",
+        titleResId = R.string.ext_btn_homerail_direct,
+        iconResId = R.drawable.cloud_arrow_up
+    ),
+
+    /**
      * 光标左移一位（长按连发）
      */
     CURSOR_LEFT(

@@ -31,6 +31,7 @@ import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Backup
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Cloud
 import androidx.compose.material.icons.rounded.Dashboard
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Info
@@ -423,6 +424,12 @@ private fun smartSections(
                 summary = snapshot.aiSummary,
                 icon = Icons.Rounded.AutoAwesome,
                 onClick = { onPushRoute(BibiSettingsRoute.Ai) }
+            ),
+            SettingsEntry.Action(
+                id = "homerail_settings",
+                titleRes = R.string.homerail_settings_title,
+                icon = Icons.Rounded.Cloud,
+                onClick = { onPushRoute(BibiSettingsRoute.HomeRail) }
             ),
             SettingsEntry.Action(
                 id = "asr_history",

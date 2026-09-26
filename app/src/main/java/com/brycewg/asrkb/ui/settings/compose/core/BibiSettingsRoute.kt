@@ -40,6 +40,11 @@ sealed interface BibiSettingsRoute {
         override val id: String = "ai"
     }
 
+    /** HomeRail 直达设置（fork 新增）。 */
+    data object HomeRail : BibiSettingsRoute {
+        override val id: String = "homerail"
+    }
+
     /** AI 设置下的“润色模式（自动选择提示词）”独立页面。 */
     data object PromptSelection : BibiSettingsRoute {
         override val id: String = "prompt_selection"

@@ -207,6 +207,11 @@ private fun SettingsRouteContent(
             actions = actions
         )
 
+        BibiSettingsRoute.HomeRail -> HomeRailSettingsScreen(
+            uiMode = uiState.uiMode,
+            onBack = { onPopRoute() }
+        )
+
         BibiSettingsRoute.PromptSelection -> PromptSelectionSettingsScreen(
             uiMode = uiState.uiMode,
             onBack = { onPopRoute() },

@@ -12,6 +12,7 @@ import com.brycewg.asrkb.asr.*
 import com.brycewg.asrkb.asr.AsrConnectionWarmer
 import com.brycewg.asrkb.asr.AsrTimeoutCalculator
 import com.brycewg.asrkb.asr.BluetoothRouteManager
+import com.brycewg.asrkb.homerail.HomeRailDirect
 import com.brycewg.asrkb.imebridge.ImeBridgeClient
 import com.brycewg.asrkb.imebridge.ImeBridgeContract
 import com.brycewg.asrkb.imebridge.ImeBridgeResult
@@ -1016,20 +1017,43 @@ class AsrSessionManager(
 
             // 插入文本
             if (finalText.isNotEmpty()) {
-                val usedBackupEngine =
-                    (asrEngine as? BackupAwareAsrEngine)?.wasLastResultFromBackup() == true
-                transitionPostprocessToDelivery()
-                val success = insertTextToFocus(finalText)
-                if (!engineStillRunning) {
-                    clearActiveSessionToken(sessionToken)
-                }
-                listener.onResultCommitted(finalText, success)
-                if (usedBackupEngine) {
+                if (HomeRailDirect.isConfigured(prefs)) {
+                    // HomeRail 直达（fork 新增）：不插入焦点框，直接送平台语音会话 + TTS 回播
+                    if (!engineStillRunning) {
+                        clearActiveSessionToken(sessionToken)
+                    }
+                    listener.onResultCommitted(finalText, true)
                     android.widget.Toast.makeText(
                         context,
-                        context.getString(com.brycewg.asrkb.R.string.toast_backup_asr_used),
+                        com.brycewg.asrkb.R.string.homerail_status_sending,
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
+                    HomeRailDirect.handleFinal(
+                        context,
+                        prefs,
+                        serviceScope,
+                        finalText,
+                        onStatus = { msg ->
+                            android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_LONG).show()
+                        },
+                        onRoundFinished = { }
+                    )
+                } else {
+                    val usedBackupEngine =
+                        (asrEngine as? BackupAwareAsrEngine)?.wasLastResultFromBackup() == true
+                    transitionPostprocessToDelivery()
+                    val success = insertTextToFocus(finalText)
+                    if (!engineStillRunning) {
+                        clearActiveSessionToken(sessionToken)
+                    }
+                    listener.onResultCommitted(finalText, success)
+                    if (usedBackupEngine) {
+                        android.widget.Toast.makeText(
+                            context,
+                            context.getString(com.brycewg.asrkb.R.string.toast_backup_asr_used),
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             } else {
                 Log.w(TAG, "Final text is empty")

@@ -13,6 +13,7 @@ import com.brycewg.asrkb.asr.BackupAwareAsrEngine
 import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.asr.ProgressiveRetryStatusOwner
 import com.brycewg.asrkb.asr.VadAutoStopGuard
+import com.brycewg.asrkb.homerail.HomeRailDirect
 import com.brycewg.asrkb.store.AsrHistoryStore
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.store.debug.DebugLogManager
@@ -935,6 +936,31 @@ class KeyboardActionHandler(
             // 若已启动新一轮录音（当前仍为 Listening 且引擎在运行），忽略旧会话迟到的 onFinal
             val stateNow = this@KeyboardActionHandler.currentState
             if (asrManager.isRunning() && stateNow is KeyboardState.Listening) return@launch
+            // HomeRail 直达：转写直接送平台语音会话（不入输入框），回复 TTS 回播
+            if (currentState !is KeyboardState.AiEditListening &&
+                HomeRailDirect.isConfigured(prefs) &&
+                text.isNotBlank()
+            ) {
+                uiListener?.onStatusMessage(context.getString(R.string.homerail_status_sending))
+                HomeRailDirect.handleFinal(
+                    context,
+                    prefs,
+                    scope,
+                    text,
+                    onStatus = { msg -> uiListener?.onStatusMessage(msg) },
+                    onRoundFinished = {
+                        // 回播结束后（或无 TTS）再续听，避免麦克风拾到自己的播报
+                        if (prefs.continuousTalkEnabled &&
+                            !asrManager.isRunning() &&
+                            getCurrentInputConnection() != null
+                        ) {
+                            startNormalListening()
+                            uiListener?.onStatusMessage(context.getString(R.string.status_continuous_talk_listening))
+                        }
+                    }
+                )
+                return@launch
+            }
             when (currentState) {
                 is KeyboardState.AiEditListening -> {
                     aiEditUseCase.handleFinal(text, currentState, seq)

@@ -44,6 +44,7 @@ internal class ExtensionButtonActionDispatcher(
         ExtensionButtonAction.FLOATING_KEYBOARD_TOGGLE -> toggleFloatingKeyboard()
         ExtensionButtonAction.AUTO_ENTER_AFTER_ASR_TOGGLE -> toggleAutoEnterAfterAsr()
         ExtensionButtonAction.CONTINUOUS_TALK_TOGGLE -> toggleContinuousTalk()
+        ExtensionButtonAction.HOMERAIL_DIRECT_TOGGLE -> toggleHomerailDirect()
         ExtensionButtonAction.UNDO -> undo(ic)
         ExtensionButtonAction.HIDE_KEYBOARD -> KeyboardActionHandler.ExtensionButtonActionResult.NEED_HIDE_KEYBOARD
     }
@@ -154,6 +155,18 @@ internal class ExtensionButtonActionDispatcher(
         }
         uiListenerProvider()?.onStatusMessage(context.getString(msgRes))
         return KeyboardActionHandler.ExtensionButtonActionResult.NEED_TOGGLE_CONTINUOUS_TALK
+    }
+
+    private fun toggleHomerailDirect(): KeyboardActionHandler.ExtensionButtonActionResult {
+        val newValue = !prefs.homerailDirectEnabled
+        prefs.homerailDirectEnabled = newValue
+        val msgRes = if (newValue) {
+            R.string.toast_homerail_direct_on
+        } else {
+            R.string.toast_homerail_direct_off
+        }
+        uiListenerProvider()?.onStatusMessage(context.getString(msgRes))
+        return KeyboardActionHandler.ExtensionButtonActionResult.SUCCESS
     }
 
     private fun toggleKeepScreenOnWhileRecording(): KeyboardActionHandler.ExtensionButtonActionResult {
