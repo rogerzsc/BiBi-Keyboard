@@ -101,6 +101,7 @@ class SettingsHostViewModel(application: Application) : AndroidViewModel(applica
 
         BibiSettingsRoute.Asr,
         BibiSettingsRoute.Ai,
+        BibiSettingsRoute.HomeRail,
         BibiSettingsRoute.PromptSelection,
         BibiSettingsRoute.PromptSelectionPreview -> 1
 
